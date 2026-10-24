@@ -1,204 +1,1019 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beyond the Border | Supporting Newly Arrived & Cross-Border Children in Hong Kong</title>
+    <title>Beyond the Border - Supporting Newly Arrived & Cross-Border Children in HK</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#0a3651',
+                        },
+                        accent: {
+                            50: '#fff7ed',
+                            500: '#f97316',
+                            600: '#ea580c',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'PingFang SC', 'Microsoft JhengHei', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .nav-link.active { color: #2563eb; border-bottom: 2px solid #2563eb; font-weight: 600; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .active-tab {
+            border-bottom: 3px solid #0284c7;
+            color: #0284c7;
+            font-weight: 700;
+        }
+        .flow-node {
+            transition: all 0.3s ease;
+        }
+        .flow-node:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 font-sans leading-relaxed flex flex-col min-h-screen">
 
-    <!-- HEADER / NAVIGATION -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <!-- Top Announcement Bar -->
+    <div class="bg-brand-900 text-white text-xs sm:text-sm py-2 px-4 text-center flex justify-between items-center">
+        <span class="mx-auto"><i class="fa-solid fa-graduation-cap me-2 text-yellow-400"></i> Empowering Cross-Border & Newly Arrived Children in Hong Kong | 跨界與新來港兒童權益與支援平台</span>
+        <button onclick="toggleLang()" class="bg-brand-700 hover:bg-brand-600 text-white px-2 py-1 rounded text-xs">繁體中文 / EN</button>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center space-x-3">
-                    <i data-lucide="heart-handshake" class="w-8 h-8 text-blue-600"></i>
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchSection('home')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                        <i class="fa-solid fa-bridge"></i>
+                    </div>
                     <div>
-                        <span class="text-xl font-bold text-slate-900 block leading-tight">Beyond the Border</span>
-                        <span class="text-xs text-slate-500">跨越界限 · Hong Kong Youth Support Initiative</span>
+                        <span class="font-extrabold text-lg sm:text-xl text-brand-900 block leading-tight">Beyond the Border</span>
+                        <span class="text-xs text-slate-500 block font-medium">跨越界限 · 擁抱未來</span>
                     </div>
                 </div>
-                <nav class="hidden md:flex space-x-6 text-sm">
-                    <button onclick="switchTab('home')" id="nav-home" class="nav-link active py-5">Home</button>
-                    <button onclick="switchTab('problems')" id="nav-problems" class="nav-link py-5">Problems & Data</button>
-                    <button onclick="switchTab('policy')" id="nav-policy" class="nav-link py-5">Policy & Evaluation</button>
-                    <button onclick="switchTab('resources')" id="nav-resources" class="nav-link py-5">Resources & Directory</button>
-                    <button onclick="switchTab('about')" id="nav-about" class="nav-link py-5">About & Methodology</button>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-1 lg:space-x-4">
+                    <button id="nav-home" onclick="switchSection('home')" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-600 active-tab"><i class="fa-solid fa-house me-1"></i> 主頁 Home</button>
+                    <button id="nav-problems" onclick="switchSection('problems')" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-600"><i class="fa-solid fa-magnifying-glass-chart me-1"></i> 問題探討 Problems</button>
+                    <button id="nav-policies" onclick="switchSection('policies')" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-600"><i class="fa-solid fa-file-contract me-1"></i> 政策評估 Policy Analysis</button>
+                    <button id="nav-resources" onclick="switchSection('resources')" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-600"><i class="fa-solid fa-hands-holding-child me-1"></i> 資源與支援 Resources</button>
+                    <button id="nav-about" onclick="switchSection('about')" class="nav-btn px-3 py-2 text-sm font-semibold text-slate-600 hover:text-brand-600"><i class="fa-solid fa-circle-info me-1"></i> 關於項目 About</button>
                 </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-slate-600 hover:text-brand-600 p-2 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
-        <!-- Mobile Navigation -->
-        <div class="md:hidden flex overflow-x-auto border-t border-slate-100 bg-slate-50 px-4 py-2 text-xs space-x-4">
-            <button onclick="switchTab('home')" class="whitespace-nowrap font-medium text-slate-700">Home</button>
-            <button onclick="switchTab('problems')" class="whitespace-nowrap font-medium text-slate-700">Problems & Data</button>
-            <button onclick="switchTab('policy')" class="whitespace-nowrap font-medium text-slate-700">Policy Evaluation</button>
-            <button onclick="switchTab('resources')" class="whitespace-nowrap font-medium text-slate-700">Resources</button>
-            <button onclick="switchTab('about')" class="whitespace-nowrap font-medium text-slate-700">About</button>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchSection('home'); toggleMobileMenu()" class="w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-brand-50 rounded-lg">1. 主頁 Home</button>
+            <button onclick="switchSection('problems'); toggleMobileMenu()" class="w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-brand-50 rounded-lg">2. 問題探討 Understanding the Problems</button>
+            <button onclick="switchSection('policies'); toggleMobileMenu()" class="w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-brand-50 rounded-lg">3. 政策評估 Evaluating Existing Policies</button>
+            <button onclick="switchSection('resources'); toggleMobileMenu()" class="w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-brand-50 rounded-lg">4. 資源與支援 Resources & Support</button>
+            <button onclick="switchSection('about'); toggleMobileMenu()" class="w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-brand-50 rounded-lg">5. 關於項目 About the Project</button>
         </div>
     </header>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="flex-grow">
 
-        <!-- ================= PAGE 1: HOME ================= -->
-        <section id="tab-home" class="tab-content active space-y-12">
-            <div class="bg-gradient-to-r from-blue-900 to-indigo-800 text-white rounded-2xl p-8 sm:p-12 shadow-xl">
-                <div class="max-w-3xl space-y-4">
-                    <span class="bg-blue-500/30 text-blue-200 text-xs font-semibold px-3 py-1 rounded-full border border-blue-400/30">Independent Public Policy & Social Initiative</span>
-                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">Every Child Deserves the Opportunity to Thrive</h1>
-                    <p class="text-blue-100 text-base sm:text-lg leading-relaxed">
-                        Supporting newly arrived children and cross-border students in Hong Kong through accessible resources, evidence-based research, and policy evaluation.
+        <!-- SECTION 1: HOME -->
+        <section id="section-home" class="content-section space-y-12 pb-12">
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-r from-brand-900 via-brand-800 to-brand-700 text-white py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+                <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                <div class="max-w-7xl mx-auto relative z-10 grid md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-6">
+                        <span class="bg-accent-500/20 text-accent-500 border border-accent-500/30 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full inline-block">
+                            Inclusive Education & Integration Framework
+                        </span>
+                        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                            跨越界限 · 支援新來港與跨境學童 <br>
+                            <span class="text-accent-500 text-2xl sm:text-4xl">Beyond the Border: Supporting Children in HK</span>
+                        </h1>
+                        <p class="text-slate-200 text-base sm:text-lg leading-relaxed">
+                            本項目致力於分析新來港學童（NAC）與跨境學童（CBC）在香港面對的教育、社交及心理適應挑戰。透過政策評估、實證數據及社會資源對接，推動具包容性的教育政策與完善支援體系。
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <button onclick="switchSection('problems')" class="bg-accent-500 hover:bg-accent-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition duration-200 flex items-center">
+                                深入了解問題 <i class="fa-solid fa-arrow-right ms-2"></i>
+                            </button>
+                            <button onclick="switchSection('resources')" class="bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl border border-white/20 backdrop-blur-sm transition duration-200">
+                                瀏覽支援資源 Resource Hub
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SVG Hero Graphic: Bridge of Integration -->
+                    <div class="flex justify-center">
+                        <svg class="w-full max-w-md h-auto" viewBox="0 0 500 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#0c4a6e" />
+                                    <stop offset="100%" stop-color="#075985" />
+                                </linearGradient>
+                                <linearGradient id="bridgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#f97316" />
+                                    <stop offset="100%" stop-color="#38bdf8" />
+                                </linearGradient>
+                            </defs>
+                            <rect width="500" height="350" rx="16" fill="url(#skyGrad)"/>
+                            <!-- Shenzhen Side -->
+                            <rect x="20" y="200" width="100" height="120" rx="4" fill="#1e293b"/>
+                            <rect x="35" y="220" width="15" height="20" fill="#38bdf8" opacity="0.6"/>
+                            <rect x="65" y="220" width="15" height="20" fill="#38bdf8" opacity="0.6"/>
+                            <rect x="35" y="250" width="15" height="20" fill="#38bdf8" opacity="0.6"/>
+                            <text x="70" y="335" fill="#94a3b8" font-size="12" font-weight="bold" text-anchor="middle">深圳 / 大陸 Mainland</text>
+                            <!-- Hong Kong Side -->
+                            <rect x="380" y="170" width="100" height="150" rx="4" fill="#1e293b"/>
+                            <rect x="395" y="190" width="15" height="25" fill="#f97316" opacity="0.6"/>
+                            <rect x="425" y="190" width="15" height="25" fill="#f97316" opacity="0.6"/>
+                            <rect x="395" y="230" width="15" height="25" fill="#f97316" opacity="0.6"/>
+                            <text x="430" y="335" fill="#94a3b8" font-size="12" font-weight="bold" text-anchor="middle">香港 Hong Kong</text>
+                            <!-- Connecting Bridge -->
+                            <path d="M 120 250 Q 250 180 380 250" stroke="url(#bridgeGrad)" stroke-width="8" fill="none"/>
+                            <path d="M 120 255 L 380 255" stroke="#ffffff" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
+                            <!-- Suspension pillars -->
+                            <line x1="250" y1="215" x2="250" y2="255" stroke="#38bdf8" stroke-width="2"/>
+                            <line x1="190" y1="228" x2="190" y2="255" stroke="#38bdf8" stroke-width="2"/>
+                            <line x1="310" y1="228" x2="310" y2="255" stroke="#38bdf8" stroke-width="2"/>
+                            <!-- Student Icon on Bridge -->
+                            <circle cx="250" cy="195" r="10" fill="#f97316"/>
+                            <path d="M 242 215 C 242 205 258 205 258 215 Z" fill="#ffffff"/>
+                            <!-- Sun / Hope Symbol -->
+                            <circle cx="250" cy="80" r="35" fill="#f97316" opacity="0.2"/>
+                            <circle cx="250" cy="80" r="25" fill="#f39c12"/>
+                            <!-- Stars/Hearts floating -->
+                            <text x="250" y="125" fill="#ffffff" font-size="12" text-anchor="middle" font-weight="bold">Beyond the Border Bridge</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlights / Executive Summary -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">核心焦點與研究核心 Overview</h2>
+                    <p class="text-slate-600 mt-2"> Addressing system gaps and supporting student transition with data-driven research and empathetic policy evaluation.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-xl flex items-center justify-center text-xl mb-4 font-bold">
+                            <i class="fa-solid fa-school-flag"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">升中派位機制 (S1 Allocation)</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            解析 2026 年 9 月入讀中一派位流程，協助跨界及新來港家長釐清自行分配學位及統一派位的複雜階段與關鍵日程。
+                        </p>
+                        <a onclick="switchSection('policies')" class="text-brand-600 font-semibold text-sm hover:underline cursor-pointer flex items-center">
+                            查看詳細流程圖 <i class="fa-solid fa-chevron-right text-xs ms-1"></i>
+                        </a>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 bg-accent-50/10 text-accent-500 bg-orange-100 rounded-xl flex items-center justify-center text-xl mb-4 font-bold">
+                            <i class="fa-solid fa-comments"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">真實個案與擬真訪談 Simulated Interviews</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            深入跨境學童、家長、教師及社工的口述故事，呈現語言障礙、每日跨境奔波及身份認同的真實現狀。
+                        </p>
+                        <a onclick="switchSection('problems')" class="text-brand-600 font-semibold text-sm hover:underline cursor-pointer flex items-center">
+                            閱讀模擬訪談個案 <i class="fa-solid fa-chevron-right text-xs ms-1"></i>
+                        </a>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="glass-card p-6 rounded-2xl shadow-sm hover:shadow-md transition">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl mb-4 font-bold">
+                            <i class="fa-solid fa-hand-holding-heart"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">實用資源目錄 Resource Directory</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                            整合政府支援計劃（如校本支援津貼）、NGO 適應班、廣東話學習資源及心理健康諮詢服務。
+                        </p>
+                        <a onclick="switchSection('resources')" class="text-brand-600 font-semibold text-sm hover:underline cursor-pointer flex items-center">
+                            搜尋支援資源 <i class="fa-solid fa-chevron-right text-xs ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Statistics Section Preview -->
+            <div class="bg-slate-100 py-12 border-y border-slate-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <div class="text-3xl sm:text-4xl font-extrabold text-brand-600 mb-1">18,000+</div>
+                            <div class="text-xs sm:text-sm text-slate-500 font-medium">每天跨境就讀學童估計人數 (Estimated Cross-boundary Students)</div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <div class="text-3xl sm:text-4xl font-extrabold text-accent-500 mb-1">60 Services</div>
+                            <div class="text-xs sm:text-sm text-slate-500 font-medium">教育局校本適應課程涵蓋範疇 (School-based Induction Classes)</div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <div class="text-3xl sm:text-4xl font-extrabold text-brand-600 mb-1">3.5 小時</div>
+                            <div class="text-xs sm:text-sm text-slate-500 font-medium">跨境學童平均每日單程及來回通勤時間 (Average Daily Commute)</div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm">
+                            <div class="text-3xl sm:text-4xl font-extrabold text-emerald-600 mb-1">60 Hours</div>
+                            <div class="text-xs sm:text-sm text-slate-500 font-medium">適應課程標準時數 (Induction Course Standard Hours)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: UNDERSTANDING THE PROBLEMS -->
+        <section id="section-problems" class="content-section hidden space-y-12 py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="border-b border-slate-200 pb-5">
+                <h2 class="text-3xl font-extrabold text-slate-900">2. 問題探討 Understanding the Problems</h2>
+                <p class="text-slate-600 mt-2">深入剖析新來港與跨境學童在學業、語言、心理健康及社會適應上的核心挑戰與實證數據。</p>
+            </div>
+
+            <!-- Interactive Sub-tabs for Section 2 -->
+            <div class="flex space-x-2 border-b border-slate-200">
+                <button onclick="switchSubTab('problems', 'sub-stats')" id="btn-sub-stats" class="subtab-btn py-2 px-4 text-sm font-semibold border-b-2 border-brand-600 text-brand-600">
+                    <i class="fa-solid fa-chart-line me-1"></i> 數據統計與趨勢 Data & Trends
+                </button>
+                <button onclick="switchSubTab('problems', 'sub-challenges')" id="btn-sub-challenges" class="subtab-btn py-2 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-brand-600">
+                    <i class="fa-solid fa-triangle-exclamation me-1"></i> 四大適應障礙 Challenges
+                </button>
+                <button onclick="switchSubTab('problems', 'sub-interviews')" id="btn-sub-interviews" class="subtab-btn py-2 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-brand-600">
+                    <i class="fa-solid fa-comments me-1"></i> 擬真訪談個案 Simulated Interviews
+                </button>
+            </div>
+
+            <!-- Subtab 1: Data Statistics & Visualizations -->
+            <div id="sub-stats" class="subtab-content space-y-8">
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Line Chart SVG: Trend of Cross-boundary Secondary Students -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900">跨境中學生人數演變趨勢 (2018-2025)</h3>
+                                <p class="text-xs text-slate-500">Cross-boundary Secondary School Students Trend</p>
+                            </div>
+                            <span class="bg-brand-50 text-brand-600 text-xs px-2.5 py-1 rounded-full font-semibold">數據數據 Visual</span>
+                        </div>
+                        <div class="w-full overflow-x-auto">
+                            <svg class="w-full h-64 min-w-[300px]" viewBox="0 0 500 250">
+                                <!-- Grid Lines -->
+                                <line x1="50" y1="30" x2="470" y2="30" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="50" y1="80" x2="470" y2="80" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="50" y1="130" x2="470" y2="130" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="50" y1="180" x2="470" y2="180" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="50" y1="210" x2="470" y2="210" stroke="#cbd5e1" stroke-width="2"/>
+                                <!-- Y Axis Labels -->
+                                <text x="40" y="35" text-anchor="end" class="text-xs" fill="#94a3b8">25k</text>
+                                <text x="40" y="85" text-anchor="end" class="text-xs" fill="#94a3b8">20k</text>
+                                <text x="40" y="135" text-anchor="end" class="text-xs" fill="#94a3b8">15k</text>
+                                <text x="40" y="185" text-anchor="end" class="text-xs" fill="#94a3b8">10k</text>
+                                <!-- Line Path -->
+                                <path d="M 70 60 L 150 75 L 230 190 L 310 170 L 390 110 L 450 90" fill="none" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/>
+                                <!-- Area under line -->
+                                <path d="M 70 60 L 150 75 L 230 190 L 310 170 L 390 110 L 450 90 L 450 210 L 70 210 Z" fill="#0284c7" opacity="0.1"/>
+                                <!-- Data Points -->
+                                <circle cx="70" cy="60" r="5" fill="#0284c7"/>
+                                <text x="70" y="48" text-anchor="middle" font-size="10" font-weight="bold" fill="#075985">22,000</text>
+                                
+                                <circle cx="150" cy="75" r="5" fill="#0284c7"/>
+                                <text x="150" y="63" text-anchor="middle" font-size="10" font-weight="bold" fill="#075985">20,500</text>
+                                
+                                <circle cx="230" cy="190" r="5" fill="#ea580c"/> <!-- Drop during pandemic -->
+                                <text x="230" y="180" text-anchor="middle" font-size="10" font-weight="bold" fill="#ea580c">8,000 (疫情大跌)</text>
+
+                                <circle cx="310" cy="170" r="5" fill="#0284c7"/>
+                                <text x="310" y="158" text-anchor="middle" font-size="10" font-weight="bold" fill="#075985">11,200</text>
+
+                                <circle cx="390" cy="110" r="5" fill="#0284c7"/>
+                                <text x="390" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#075985">16,800</text>
+
+                                <circle cx="450" cy="90" r="5" fill="#0284c7"/>
+                                <text x="450" y="78" text-anchor="middle" font-size="10" font-weight="bold" fill="#075985">18,500</text>
+
+                                <!-- X Axis Labels -->
+                                <text x="70" y="230" text-anchor="middle" class="text-xs" fill="#64748b">2018/19</text>
+                                <text x="150" y="230" text-anchor="middle" class="text-xs" fill="#64748b">2019/20</text>
+                                <text x="230" y="230" text-anchor="middle" class="text-xs" fill="#64748b">2021/22</text>
+                                <text x="310" y="230" text-anchor="middle" class="text-xs" fill="#64748b">2022/23</text>
+                                <text x="390" y="230" text-anchor="middle" class="text-xs" fill="#64748b">2023/24</text>
+                                <text x="450" y="230" text-anchor="middle" class="text-xs" fill="#64748b">2024/25</text>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2 italic">* 備註：2020-2022 年間受封關及線上授課影響，實際跨境通學人數出現顯著下降，通關後人數逐漸回升。</p>
+                    </div>
+
+                    <!-- Bar Chart SVG: Newly Arrived Children Enrolled by Age/Level -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-slate-900">新來港學童入讀學階分布 (Newly Arrived Children)</h3>
+                                <p class="text-xs text-slate-500">Distribution by Educational Level (Primary vs Secondary)</p>
+                            </div>
+                            <span class="bg-accent-50 text-accent-600 text-xs px-2.5 py-1 rounded-full font-semibold">統計分布 Chart</span>
+                        </div>
+                        <div class="w-full overflow-x-auto">
+                            <svg class="w-full h-64 min-w-[300px]" viewBox="0 0 500 250">
+                                <!-- Grid lines -->
+                                <line x1="60" y1="30" x2="470" y2="30" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="60" y1="80" x2="470" y2="80" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="60" y1="130" x2="470" y2="130" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="60" y1="180" x2="470" y2="180" stroke="#f1f5f9" stroke-width="1"/>
+                                <line x1="60" y1="210" x2="470" y2="210" stroke="#cbd5e1" stroke-width="2"/>
+
+                                <text x="50" y="35" text-anchor="end" class="text-xs" fill="#94a3b8">8,000</text>
+                                <text x="50" y="85" text-anchor="end" class="text-xs" fill="#94a3b8">6,000</text>
+                                <text x="50" y="135" text-anchor="end" class="text-xs" fill="#94a3b8">4,000</text>
+                                <text x="50" y="185" text-anchor="end" class="text-xs" fill="#94a3b8">2,000</text>
+
+                                <!-- Bars Group 1: Primary School -->
+                                <rect x="110" y="70" width="45" height="140" fill="#0284c7" rx="4"/>
+                                <text x="132" y="60" text-anchor="middle" font-size="11" font-weight="bold" fill="#075985">6,400</text>
+                                <text x="132" y="230" text-anchor="middle" class="text-xs" font-weight="bold" fill="#334155">小學 Primary</text>
+
+                                <!-- Bars Group 2: Secondary School -->
+                                <rect x="230" y="100" width="45" height="110" fill="#f97316" rx="4"/>
+                                <text x="252" y="90" text-anchor="middle" font-size="11" font-weight="bold" fill="#ea580c">4,800</text>
+                                <text x="252" y="230" text-anchor="middle" class="text-xs" font-weight="bold" fill="#334155">中學 Secondary</text>
+
+                                <!-- Bars Group 3: Kindergarten/Other -->
+                                <rect x="350" y="150" width="45" height="60" fill="#10b981" rx="4"/>
+                                <text x="372" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="#047857">2,100</text>
+                                <text x="372" y="230" text-anchor="middle" class="text-xs" font-weight="bold" fill="#334155">幼稚園 Kindergarten</text>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2 italic">數據顯示小學階段的新來港學童適應壓力期最長，而中學階段則面對公開試（DSE）課程轉化難題。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 2: Four Key Challenges Detailed -->
+            <div id="sub-challenges" class="subtab-content hidden space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-3 text-brand-600">
+                            <i class="fa-solid fa-language text-2xl"></i>
+                            <h3 class="text-xl font-bold">1. 語言與教學適應 Language Barriers</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            <strong>廣東話與繁體字轉化：</strong> 大部分新來港學童習慣以普通話及簡體字進行學習。在香港中學，除了廣東話社交，英語授課（EMI）或繁體字教材令其在初期學習進度大幅落後。
+                        </p>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            <strong>英語程度落差：</strong> 內地不同省份英語教學標準不一，部分學生文法底子好但聽說能力較弱，難以應付香港各科嚴謹的英文詞彙 requirements。
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-3 text-accent-500">
+                            <i class="fa-solid fa-clock text-2xl"></i>
+                            <h3 class="text-xl font-bold">2. 通勤與作息負擔 Daily Commute & Fatigue</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            <strong>極端通學時間：</strong> 跨境學童平均每日清晨 5:30 需起床準備，經過陸路口岸（如羅湖、落馬洲、深圳灣）排隊過關，單程需時 1.5 至 2 小時，每日來回耗時長達 3 至 4 小時。
+                        </p>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            <strong>課外活動受限：</strong> 由於需趕搭校車或於口岸關閉前返回內地，跨境學童極難參加港校的課後補習、社團活動或體育訓練，影響整體校園融入感。
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-3 text-purple-600">
+                            <i class="fa-solid fa-people-group text-2xl"></i>
+                            <h3 class="text-xl font-bold">3. 社交孤立與身份認同 Social Isolation</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            <strong>雙重邊緣化 (Double Marginalization)：</strong> 在香港學校被視為「內地人」，回到深圳社區因就讀香港學校而缺乏本地同齡朋友圈，產生「兩邊都不是」的身份認同迷茫。
+                        </p>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            <strong>刻板印象與文化隔閡：</strong> 部分學生因口音或文化背景差異，不敢在課堂開口，逐漸形成社交封閉，影響心理健康。
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                        <div class="flex items-center space-x-3 text-emerald-600">
+                            <i class="fa-solid fa-house-chimney-user text-2xl"></i>
+                            <h3 class="text-xl font-bold">4. 家長支援與資訊不對稱 Institutional Barriers</h3>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            <strong>複雜的升學制度：</strong> 雙非或新來港家長對香港的中一派位（SSPA）、文憑試（DSE）多元升學路徑及校本評核（SBA）制度了解有限，難以提供精準輔導。
+                        </p>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            <strong>跨境家長溝通障礙：</strong> 無法親身出席香港學校的家長日、講座或校園活動，家校合作出現斷層。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 3: Simulated Interviews -->
+            <div id="sub-interviews" class="subtab-content hidden space-y-8">
+                <div class="bg-brand-50 p-6 rounded-2xl border border-brand-100">
+                    <h3 class="text-xl font-bold text-brand-900 mb-2"><i class="fa-solid fa-microphone-lines me-2"></i> 個案擬真訪談記錄 Simulated Stakeholder Interviews</h3>
+                    <p class="text-slate-600 text-sm">此處呈現四位代表性關係人（學生、家長、教師、社工）之口述訪談，真實還原第一線經歷。</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Interview 1: Student -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-lg">
+                                小林
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">小林 (14歲) — 跨境中學生</h4>
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">居住深圳 · 北區中學就讀</span>
+                            </div>
+                        </div>
+                        <blockquote class="text-slate-700 italic text-sm space-y-2 border-l-4 border-brand-500 pl-4 py-1">
+                            <p>「我每天早上 5:45 就得起床，趕到福田口岸過關。有時候遇到過關高峰期排隊半個小時，心裡特別著急怕遲到記缺勤。」</p>
+                            <p>「剛上中一的時候，老師用廣東話講英文課，我完全聽不懂。想跟旁邊同學說話，但又怕自己的廣東話有口音被笑話。放學後大家說去留校打籃球，我卻必須馬上趕校車回深圳，感覺自己永遠游離在班級外面。」</p>
+                        </blockquote>
+                    </div>
+
+                    <!-- Interview 2: Parent -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold text-lg">
+                                陳太太
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">陳太太 — 新來港學童家長</h4>
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">來港1.5年 · 居住深水埗劏房</span>
+                            </div>
+                        </div>
+                        <blockquote class="text-slate-700 italic text-sm space-y-2 border-l-4 border-accent-500 pl-4 py-1">
+                            <p>「香港的學校通告全是英文或者繁體字，很多專有名詞我看不懂。升中派位什麼自行分配、統一派位，我聽得頭昏腦脹。」</p>
+                            <p>「孩子適應得很辛苦，成績從以前在內地的頂尖變成了倒數，性格也變得孤僻。我們想請家教補習，但香港的補習費一小時要兩三百，我們靠打零工根本負擔不起。」</p>
+                        </blockquote>
+                    </div>
+
+                    <!-- Interview 3: Teacher -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold text-lg">
+                                張老師
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">張老師 — 中學資深班主任</h4>
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">任教於屯門區資助中學</span>
+                            </div>
+                        </div>
+                        <blockquote class="text-slate-700 italic text-sm space-y-2 border-l-4 border-emerald-500 pl-4 py-1">
+                            <p>「新來港學童的理科基礎往往非常好，數理化成績優異，但英文跟通識/公民與社會發展科適應極為吃力。」</p>
+                            <p>「學校雖然有申請教育局的校本支援津貼，但資源有限，很難為每個學生提供一對一的語文抽離教學。此外，跨境家長無法出席實體家長會，線上溝通效果始終有限。」</p>
+                        </blockquote>
+                    </div>
+
+                    <!-- Interview 4: Social Worker -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold text-lg">
+                                王社工
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-900">王社工 — NGO 學校駐校社工</h4>
+                                <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">服務新來港學童支援項目5年</span>
+                            </div>
+                        </div>
+                        <blockquote class="text-slate-700 italic text-sm space-y-2 border-l-4 border-purple-500 pl-4 py-1">
+                            <p>「很多跨境學童的心理壓力處於隱性狀態。他們長期處於高強度疲勞中，情緒無處宣泄。」</p>
+                            <p>「現有的適應課程（Induction Programme）多數為期僅 60 小時，且偏重學術補習，缺乏深度的心理輔導與社區歸屬感建立。我們需要更具持續性的社區同行者計劃。」</p>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: EVALUATING EXISTING POLICIES -->
+        <section id="section-policies" class="content-section hidden space-y-12 py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="border-b border-slate-200 pb-5">
+                <h2 class="text-3xl font-extrabold text-slate-900">3. 政策評估 Evaluating Existing Policies</h2>
+                <p class="text-slate-600 mt-2">全面檢視教育局現行政策、升中派位機制流程、政策缺口分析及改善建議。</p>
+            </div>
+
+            <!-- Sub Navigation Tabs for Section 3 -->
+            <div class="flex space-x-2 border-b border-slate-200 overflow-x-auto">
+                <button onclick="switchSubTab('policies', 'sub-flowchart')" id="btn-sub-flowchart" class="subtab-btn py-2 px-4 text-sm font-semibold border-b-2 border-brand-600 text-brand-600 whitespace-nowrap">
+                    <i class="fa-solid fa-sitemap me-1"></i> 2026年9月升中派位流程圖 S1 Allocation
+                </button>
+                <button onclick="switchSubTab('policies', 'sub-measures')" id="btn-sub-measures" class="subtab-btn py-2 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-brand-600 whitespace-nowrap">
+                    <i class="fa-solid fa-list-check me-1"></i> 現行支援措施 Existing Measures
+                </button>
+                <button onclick="switchSubTab('policies', 'sub-gaps')" id="btn-sub-gaps" class="subtab-btn py-2 px-4 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-brand-600 whitespace-nowrap">
+                    <i class="fa-solid fa-bugs me-1"></i> 政策缺口與建議 Policy Gaps & Recs
+                </button>
+            </div>
+
+            <!-- Subtab 1: Interactive Flowchart for 2026 September Secondary 1 Allocation -->
+            <div id="sub-flowchart" class="subtab-content space-y-6">
+                <div class="bg-brand-50 border border-brand-200 p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold text-brand-900 mb-2"><i class="fa-solid fa-diagram-project me-2"></i> 2026年9月入讀中一派位機制互動流程圖 (Secondary 1 Allocation Flowchart)</h3>
+                    <p class="text-sm text-slate-600">專為新來港及跨境家長設計之派位步驟解析，點擊各階段節點可展開詳細說明及注意事項。</p>
+                </div>
+
+                <!-- Interactive Flowchart SVG + DOM Layout -->
+                <div class="relative bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-8">
+                    <!-- Step 1 -->
+                    <div class="flow-node bg-slate-50 border-2 border-brand-500 p-5 rounded-xl">
+                        <div class="flex items-center justify-between cursor-pointer" onclick="toggleFlowDetail('flow-step-1')">
+                            <div class="flex items-center space-x-4">
+                                <span class="bg-brand-600 text-white font-extrabold w-8 h-8 rounded-full flex items-center justify-center">1</span>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-lg">階段一：自行分配學位 (Discretionary Places Stage)</h4>
+                                    <p class="text-xs text-slate-500">時間：2026年1月上旬至下旬 (Jan 2026)</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-slate-400"></i>
+                        </div>
+                        <div id="flow-step-1" class="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-600 space-y-2">
+                            <p><strong>申請規則：</strong> 家長不受學校網限制，可向不多於兩所列入《申請中一自行分配學位手冊》的官立或資助中學遞交申請。</p>
+                            <p><strong>收生準則：</strong> 學校根據教育局提供的學生成績次第名單（Rank Order List）、面試表現、課外活動及操行進行遴選（不得設筆試）。</p>
+                            <p class="text-accent-600"><strong><i class="fa-solid fa-circle-exclamation me-1"></i> 新來港/跨境學生提示：</strong> 部分學校特設面試語文彈性安排，建議提前準備英語與廣東話自我介紹。</p>
+                        </div>
+                    </div>
+
+                    <!-- Arrow Visual -->
+                    <div class="flex justify-center my-2">
+                        <i class="fa-solid fa-arrow-down text-2xl text-brand-400"></i>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flow-node bg-slate-50 border-2 border-brand-500 p-5 rounded-xl">
+                        <div class="flex items-center justify-between cursor-pointer" onclick="toggleFlowDetail('flow-step-2')">
+                            <div class="flex items-center space-x-4">
+                                <span class="bg-brand-600 text-white font-extrabold w-8 h-8 rounded-full flex items-center justify-center">2</span>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-lg">階段二：自行分配學位結果通知 (Notification of Results)</h4>
+                                    <p class="text-xs text-slate-500">時間：2026年3月下旬 (Late Mar 2026)</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-slate-400"></i>
+                        </div>
+                        <div id="flow-step-2" class="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-600 space-y-2 hidden">
+                            <p><strong>通知機制：</strong> 中學會通知獲列為正選的自行分配學位申請學生家長。</p>
+                            <p><strong>無須回覆：</strong> 家長無須即時確認，派位結果將於7月與統一派位結果一併正式公布。</p>
+                        </div>
+                    </div>
+
+                    <!-- Arrow Visual -->
+                    <div class="flex justify-center my-2">
+                        <i class="fa-solid fa-arrow-down text-2xl text-brand-400"></i>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flow-node bg-slate-50 border-2 border-brand-500 p-5 rounded-xl">
+                        <div class="flex items-center justify-between cursor-pointer" onclick="toggleFlowDetail('flow-step-3')">
+                            <div class="flex items-center space-x-4">
+                                <span class="bg-brand-600 text-white font-extrabold w-8 h-8 rounded-full flex items-center justify-center">3</span>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-lg">階段三：統一派位選校 (Central Allocation Stage)</h4>
+                                    <p class="text-xs text-slate-500">時間：2026年4月上旬至5月初 (Apr - May 2026)</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-slate-400"></i>
+                        </div>
+                        <div id="flow-step-3" class="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-600 space-y-2 hidden">
+                            <p><strong>甲部 (Part A) 不受學校網限制：</strong> 可選填最多 3 所全港任何中學（佔統一派位學額約 10%）。</p>
+                            <p><strong>乙部 (Part B) 受本校網限制：</strong> 可選填最多 30 所所屬學校網（包含跨境學童專用校網）的中學（佔統一派位學額約 90%）。</p>
+                            <p class="text-brand-700"><strong><i class="fa-solid fa-lightbulb me-1"></i> 跨境專用校網：</strong> 教育局每年因應跨境學生人數，於黃大仙、觀塘、屯門、元朗、北區及大埔等指定網劃撥學額。</p>
+                        </div>
+                    </div>
+
+                    <!-- Arrow Visual -->
+                    <div class="flex justify-center my-2">
+                        <i class="fa-solid fa-arrow-down text-2xl text-brand-400"></i>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flow-node bg-slate-50 border-2 border-brand-500 p-5 rounded-xl">
+                        <div class="flex items-center justify-between cursor-pointer" onclick="toggleFlowDetail('flow-step-4')">
+                            <div class="flex items-center space-x-4">
+                                <span class="bg-brand-600 text-white font-extrabold w-8 h-8 rounded-full flex items-center justify-center">4</span>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-lg">階段四：公布派位結果與註冊 (Release of Results & Registration)</h4>
+                                    <p class="text-xs text-slate-500">時間：2026年7月上旬 (Early Jul 2026)</p>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-slate-400"></i>
+                        </div>
+                        <div id="flow-step-4" class="mt-4 pt-4 border-t border-slate-200 text-sm text-slate-600 space-y-2 hidden">
+                            <p><strong>派位結果公布：</strong> 家長可透過「中一派位電子平台」或就讀小學領取派位結果通知書。</p>
+                            <p><strong>辦理註冊：</strong> 必須於指定兩天內前往獲派中學辦理註冊手續，否則視為放棄學額。</p>
+                            <p><strong>叩門 (Door-knocking)：</strong> 如對結果不滿意，可在註冊後即時前往心儀學校嘗試申請「叩門學額」。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 2: Existing Measures -->
+            <div id="sub-measures" class="subtab-content hidden space-y-6">
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="text-brand-600 text-3xl mb-3"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                        <h4 class="font-bold text-lg mb-2">校本支援津貼 (School-Based Grant)</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            教育局向公營學校發放津貼，學校可靈活運用資助開設廣東話補習班、英語提升班、購買繁體字學習教材或舉辦社區共融活動。
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="text-brand-600 text-3xl mb-3"><i class="fa-solid fa-chalkboard-user"></i></div>
+                        <h4 class="font-bold text-lg mb-2">60小時適應課程 (Induction Programme)</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            由受資助非政府機構（NGO）辦理，為新來港兒童提供 60 小時的校外適應課程，範疇涵蓋廣東話基礎、學習技巧及社區探索。
+                        </p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <div class="text-brand-600 text-3xl mb-3"><i class="fa-solid fa-bus"></i></div>
+                        <h4 class="font-bold text-lg mb-2">跨境學童通關及校車便利措施</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">
+                            開設「跨境學童專用通道」、發放「跨境學童封閉道路通行許可證」以允許跨境校車直達口岸及學校，縮短通關時間。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtab 3: Gaps and Policy Recommendations -->
+            <div id="sub-gaps" class="subtab-content hidden space-y-6">
+                <!-- Accordions for Gap Analysis -->
+                <div class="space-y-4">
+                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
+                        <button class="w-full p-4 text-left font-bold text-slate-900 bg-slate-50 hover:bg-slate-100 flex justify-between items-center" onclick="toggleAccordion('gap-1')">
+                            <span><i class="fa-solid fa-triangle-exclamation text-amber-500 me-2"></i> 缺口 1：支援時數不足與項目過度偏重學術</span>
+                            <i class="fa-solid fa-plus text-slate-400"></i>
+                        </button>
+                        <div id="gap-1" class="p-4 border-t border-slate-200 text-sm text-slate-600 space-y-2 hidden">
+                            <p><strong>現狀問題：</strong> 現行 60 小時適應課程多為一次性，缺乏持續性跟踪。課程設計以應試與語言補習為主，忽視情緒健康與身份認同轉化。</p>
+                            <p class="text-brand-700"><strong>建議方案：</strong> 延伸適應期至至少一年，導入「同儕導師（Peer Buddy）」制度，由高年級本地學生與新來港學生結對同行。</p>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
+                        <button class="w-full p-4 text-left font-bold text-slate-900 bg-slate-50 hover:bg-slate-100 flex justify-between items-center" onclick="toggleAccordion('gap-2')">
+                            <span><i class="fa-solid fa-triangle-exclamation text-amber-500 me-2"></i> 缺口 2：跨境家家校溝通機制缺失</span>
+                            <i class="fa-solid fa-plus text-slate-400"></i>
+                        </button>
+                        <div id="gap-2" class="p-4 border-t border-slate-200 text-sm text-slate-600 space-y-2 hidden">
+                            <p><strong>現狀問題：</strong> 居住內地的家長因簽注限制及交通成本，極難親身參與學校面談、 PTA 家長會或升學講座，家校合作流於形式。</p>
+                            <p class="text-brand-700"><strong>建議方案：</strong> 建構常態化線上家長平台，並在深圳邊境口岸區域建立「跨境家長支援服務中心」，辦理面對面政策諮詢。</p>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl overflow-hidden bg-white">
+                        <button class="w-full p-4 text-left font-bold text-slate-900 bg-slate-50 hover:bg-slate-100 flex justify-between items-center" onclick="toggleAccordion('gap-3')">
+                            <span><i class="fa-solid fa-triangle-exclamation text-amber-500 me-2"></i> 缺口 3：心理健康與社區共融支援薄弱</span>
+                            <i class="fa-solid fa-plus text-slate-400"></i>
+                        </button>
+                        <div id="gap-3" class="p-4 border-t border-slate-200 text-sm text-slate-600 space-y-2 hidden">
+                            <p><strong>現狀問題：</strong> 駐校社工手頭個案過多，難以精準識別跨境學生因長途通學引發的慢性疲勞及心理焦慮問題。</p>
+                            <p class="text-brand-700"><strong>建議方案：</strong> 撥款設立專項「跨界學童心理健康基金」，聯合跨區 NGO 打造社區共融營會及跨文化適應工作坊。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: RESOURCES & SUPPORT -->
+        <section id="section-resources" class="content-section hidden space-y-12 py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="border-b border-slate-200 pb-5">
+                <h2 class="text-3xl font-extrabold text-slate-900">4. 資源與支援 Resources & Support</h2>
+                <p class="text-slate-600 mt-2">一站式實用服務目錄，包含政府官方門戶、NGO 支援熱線、廣東話自學資源及心靈輔導渠道。</p>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div class="relative w-full md:w-96">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400"></i>
+                    <input type="text" id="resource-search" onkeyup="filterResources()" placeholder="搜尋資源關鍵字 (例如: 廣東話, 津貼, 社工)..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+                <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                    <button onclick="filterCategory('all')" class="res-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-600 text-white">全部 All</button>
+                    <button onclick="filterCategory('gov')" class="res-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200">政府服務 Government</button>
+                    <button onclick="filterCategory('ngo')" class="res-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200">NGO 社福機構</button>
+                    <button onclick="filterCategory('learning')" class="res-filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200">語言學習 Language</button>
+                </div>
+            </div>
+
+            <!-- Resource Cards Grid -->
+            <div id="resource-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="res-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3" data-category="gov text-search">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded">教育局 EDB</span>
+                        <i class="fa-solid fa-building-columns text-slate-400"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-base">新來港兒童教育服務專頁</h4>
+                    <p class="text-xs text-slate-600">提供入學安排、60小時適應課程申請及校本支援津貼申請指引。</p>
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="text-slate-500"><i class="fa-solid fa-phone me-1"></i> 2891 0088</span>
+                        <a href="https://www.edb.gov.hk" target="_blank" class="text-brand-600 font-semibold hover:underline">瀏覽網站 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="res-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3" data-category="ngo text-search">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-0.5 rounded">香港國際社會服務社 ISS-HK</span>
+                        <i class="fa-solid fa-hand-holding-heart text-slate-400"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-base">跨境學童及家庭服務中心</h4>
+                    <p class="text-xs text-slate-600">提供深圳邊境心理諮詢、跨境家長互助會及升學適應小組活動。</p>
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="text-slate-500"><i class="fa-solid fa-phone me-1"></i> 2475 8588</span>
+                        <a href="#" class="text-brand-600 font-semibold hover:underline">聯繫機構 <i class="fa-solid fa-envelope text-[10px]"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="res-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3" data-category="learning text-search">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded">粵語學習 Cantonese</span>
+                        <i class="fa-solid fa-language text-slate-400"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-base">廣東話日常口語與繁簡轉換工具</h4>
+                    <p class="text-xs text-slate-600">針對內地學生設計之日常生活粵語短句對照表及粵拼互動教學。</p>
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="text-slate-500"><i class="fa-solid fa-book-open me-1"></i> 自學自練</span>
+                        <a onclick="switchSection('problems')" class="text-brand-600 font-semibold hover:underline cursor-pointer">查看教學</a>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="res-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3" data-category="ngo text-search">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-0.5 rounded">香港青協 HKFYG</span>
+                        <i class="fa-solid fa-users text-slate-400"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-base">青少年熱線與情緒輔導</h4>
+                    <p class="text-xs text-slate-600">專為中學生提供在學壓力、同儕關係及身份認同溝通專線。</p>
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="text-slate-500"><i class="fa-solid fa-phone me-1"></i> 2777 8899</span>
+                        <a href="#" class="text-brand-600 font-semibold hover:underline">撥打熱線</a>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="res-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3" data-category="gov text-search">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded">民政事務總署 HAD</span>
+                        <i class="fa-solid fa-house-user text-slate-400"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-base">新來港人士社區融入計劃</h4>
+                    <p class="text-xs text-slate-600">各區民政事務處舉辦之社區導賞、文化交流活動及廣東話班。</p>
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="text-slate-500"><i class="fa-solid fa-map-location-dot me-1"></i> 18區社區中心</span>
+                        <a href="https://www.had.gov.hk" target="_blank" class="text-brand-600 font-semibold hover:underline">官網查詢</a>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="res-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3" data-category="learning text-search">
+                    <div class="flex justify-between items-start">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded">英文提升 English</span>
+                        <i class="fa-solid fa-graduation-cap text-slate-400"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-base">香港中學英文專有名詞對照手冊</h4>
+                    <p class="text-xs text-slate-600">涵蓋數學、科學、通識科必備英文詞彙，協助快速銜接英文授課（EMI）。</p>
+                    <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+                        <span class="text-slate-500"><i class="fa-solid fa-file-pdf me-1"></i> 免費下載</span>
+                        <a href="#" onclick="alert('教材準備中，請稍後關注！'); return false;" class="text-brand-600 font-semibold hover:underline">下載 PDF</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: ABOUT THE PROJECT -->
+        <section id="section-about" class="content-section hidden space-y-12 py-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="border-b border-slate-200 pb-5">
+                <h2 class="text-3xl font-extrabold text-slate-900">5. 關於項目 About the Project</h2>
+                <p class="text-slate-600 mt-2">了解 Beyond the Border 項目的研究宗旨、團隊願景及聯絡方式。</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-bold text-brand-900">項目使命與願景 Mission & Vision</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        「Beyond the Border - 跨越界限」項目旨在倡導公平、包容且具同理心的教育環境。我們深信，每一位學童——無論其出身背景或居住地點——都擁有在香港教育體系中獲得優質教育與健康成長的權利。
                     </p>
-                    <div class="pt-4 flex flex-wrap gap-4">
-                        <button onclick="switchTab('resources')" class="bg-white text-blue-900 font-semibold px-5 py-2.5 rounded-lg shadow hover:bg-blue-50 transition">Find Resources & Support</button>
-                        <button onclick="switchTab('policy')" class="bg-blue-700/60 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg border border-blue-400/40 transition">Explore Policy Analysis</button>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        透過結合政策檢視、第一線關係人訪談及實用資源整合，我們致力於為政策制定者、學校行政人員、社工及家長搭建溝通橋樑，推動具體可行的政策改革與跨界支援。
+                    </p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h4 class="font-bold text-slate-900 text-lg border-b border-slate-100 pb-2">聯絡與合作 Contact Us</h4>
+                    <form onsubmit="handleFormSubmit(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">姓名 / Name</label>
+                            <input type="text" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">電郵 / Email</label>
+                            <input type="email" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">訊息內容 / Message</label>
+                            <textarea rows="3" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 px-4 rounded-lg text-sm transition">
+                            提交訊息 Submit Message
+                        </button>
+                    </form>
+                    <div id="form-msg" class="text-xs text-emerald-600 font-semibold hidden">
+                        <i class="fa-solid fa-check-circle me-1"></i> 訊息已順利送出，我們將盡快與您聯繫！
                     </div>
                 </div>
-            </div>
-
-            <div class="bg-white rounded-xl p-8 border border-slate-200 shadow-sm space-y-4">
-                <h2 class="text-2xl font-bold text-slate-900">项目的使命与目标 (Mission & Vision)</h2>
-                <p class="text-slate-600 leading-relaxed">
-                    Every child deserves access to education, support, and opportunities to reach their full potential, regardless of their background or circumstances. <strong>Beyond the Border</strong> is an independent initiative dedicated to supporting newly arrived children and cross-border students in Hong Kong.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
-                        <i data-lucide="book-open" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900">1. Educational Access</h3>
-                    <p class="text-sm text-slate-600">Navigating school admissions, understanding local curricula, and accessing appropriate learning support tailored to individual eligibility.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center">
-                        <i data-lucide="users" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900">2. Language & Belonging</h3>
-                    <p class="text-sm text-slate-600">Addressing language barriers (Cantonese & English), adjusting to social expectations, and building peer relationships.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center">
-                        <i data-lucide="compass" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900">3. Access to Information</h3>
-                    <p class="text-sm text-slate-600">Streamlining scattered service information for families and addressing commuting and scheduling challenges.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= PAGE 2: PROBLEMS & DATA ================= -->
-        <section id="tab-problems" class="tab-content space-y-10">
-            <div>
-                <h2 class="text-3xl font-bold text-slate-900 mb-2">Understanding the Problems</h2>
-                <p class="text-slate-600">Examining the real challenges faced by newly arrived and cross-border students through evidence, data, and lived experiences.</p>
-            </div>
-
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white p-6 rounded-xl border border-blue-200 shadow-sm space-y-2">
-                    <span class="text-3xl font-extrabold text-blue-600">13,845</span>
-                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">2025/26 School Year</p>
-                    <h4 class="font-bold text-slate-900 text-sm">跨境中学生人数</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">3-year increase of ~47.4% from 9,395 (2022/23).</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-blue-200 shadow-sm space-y-2">
-                    <span class="text-3xl font-extrabold text-blue-600">5,823</span>
-                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">2025/26 Academic Year</p>
-                    <h4 class="font-bold text-slate-900 text-sm">新来港内地儿童入学人数</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">Primary & Secondary arrivals enrolled in HK schools.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-blue-200 shadow-sm space-y-2">
-                    <span class="text-3xl font-extrabold text-blue-600">60 Hours</span>
-                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">EDB Funded</p>
-                    <h4 class="font-bold text-slate-900 text-sm">免费适应课程</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">Small group courses covering Cantonese and study skills.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-blue-200 shadow-sm space-y-2">
-                    <span class="text-3xl font-extrabold text-blue-600">40.6%</span>
-                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Survey Finding</p>
-                    <h4 class="font-bold text-slate-900 text-sm">未参加课后学术活动的跨境生</h4>
-                    <p class="text-xs text-slate-600 leading-relaxed">HKFYG Study: Main reason cited was commuting constraints.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= PAGE 3: POLICY & EVALUATION ================= -->
-        <section id="tab-policy" class="tab-content space-y-10">
-            <div>
-                <h2 class="text-3xl font-bold text-slate-900 mb-2">Policy Analysis & Evaluation</h2>
-                <p class="text-slate-600">Evaluating existing Hong Kong SAR support framework and identifying policy improvement opportunities.</p>
-            </div>
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-                <h3 class="font-bold text-slate-900 mb-4">5 Key Policy Recommendations</h3>
-                <ul class="list-disc pl-5 space-y-2 text-sm text-slate-700">
-                    <li><strong>Recommendation 01:</strong> Centralized Support Information Hub</li>
-                    <li><strong>Recommendation 02:</strong> Strengthen Follow-up Support After Adaptation</li>
-                    <li><strong>Recommendation 03:</strong> Flexible Extracurricular Scheduling for Commuters</li>
-                    <li><strong>Recommendation 04:</strong> Improve Coordination Between Schools and Family Services</li>
-                    <li><strong>Recommendation 05:</strong> Increase Transparency in Policy Outcome Data</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- ================= PAGE 4: RESOURCES & DIRECTORY ================= -->
-        <section id="tab-resources" class="tab-content space-y-8">
-            <div>
-                <h2 class="text-3xl font-bold text-slate-900 mb-2">Practical Support Directory</h2>
-                <p class="text-slate-600">Verified educational, community, and wellbeing resources for families and children.</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <span class="bg-blue-100 text-blue-700 text-xs px-2.5 py-1 rounded font-semibold">Education Bureau</span>
-                    <h3 class="text-lg font-bold text-slate-900">School Placement Assistance (EDB)</h3>
-                    <p class="text-xs text-slate-600">Direct placement support for primary and secondary school places in HK.</p>
-                    <p class="text-xs text-slate-500"><strong>Phone:</strong> 2892 6191</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <span class="bg-emerald-100 text-emerald-700 text-xs px-2.5 py-1 rounded font-semibold">Social Welfare Dept</span>
-                    <h3 class="text-lg font-bold text-slate-900">Integrated Family Service Centres (IFSCs)</h3>
-                    <p class="text-xs text-slate-600">Community-based counselling, family education, and welfare assistance.</p>
-                    <p class="text-xs text-slate-500"><strong>Hotline:</strong> 2343 2255</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ================= PAGE 5: ABOUT & METHODOLOGY ================= -->
-        <section id="tab-about" class="tab-content space-y-8">
-            <div>
-                <h2 class="text-3xl font-bold text-slate-900 mb-2">About & Methodology</h2>
-                <p class="text-slate-600">Background, ethics, and research framework behind Beyond the Border.</p>
-            </div>
-            <div class="bg-slate-900 text-white rounded-xl p-8 text-center space-y-4">
-                <h3 class="text-xl font-bold">Contact Team</h3>
-                <p class="text-sm text-slate-300">contact@beyondtheborder.hk</p>
             </div>
         </section>
 
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
-        © 2026 Beyond the Border (跨越界限). Independent Educational & Public Policy Project.
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10 border-t border-slate-800 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold">
+                        <i class="fa-solid fa-bridge"></i>
+                    </div>
+                    <span class="text-white font-bold text-sm">Beyond the Border Project</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a onclick="switchSection('home')" class="hover:text-white cursor-pointer">主頁 Home</a>
+                    <a onclick="switchSection('problems')" class="hover:text-white cursor-pointer">問題探討 Problems</a>
+                    <a onclick="switchSection('policies')" class="hover:text-white cursor-pointer">政策評估 Policies</a>
+                    <a onclick="switchSection('resources')" class="hover:text-white cursor-pointer">資源 Support</a>
+                    <a onclick="switchSection('about')" class="hover:text-white cursor-pointer">關於 About</a>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-6 text-center text-slate-500">
+                <p>© 2026 Beyond the Border: Supporting Newly Arrived & Cross-Border Children in Hong Kong. All Rights Reserved.</p>
+                <p class="mt-1">本平台旨在提供教育政策研究與社會資源導向，所有派位數據以香港特別行政區教育局（EDB）最新公布為準。</p>
+            </div>
+        </div>
     </footer>
 
+    <!-- JavaScript Logic -->
     <script>
-        lucide.createIcons();
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            const navBtn = document.getElementById('nav-' + tabId);
-            if (navBtn) navBtn.classList.add('active');
+        // Section Switching Logic
+        function switchSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(sec => sec.classList.add('hidden'));
+
+            // Show selected section
+            const targetSection = document.getElementById(`section-${sectionId}`);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            // Update Header Tab Highlight
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active-tab'));
+            
+            const activeBtn = document.getElementById(`nav-${sectionId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active-tab');
+            }
+
+            // Scroll to top smooth
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Subtab Switching Logic inside Sections
+        function switchSubTab(section, subId) {
+            // Hide subtab content
+            const subContents = document.querySelectorAll(`#section-${section} .subtab-content`);
+            subContents.forEach(content => content.classList.add('hidden'));
+
+            // Deactivate subtab buttons
+            const subBtns = document.querySelectorAll(`#section-${section} .subtab-btn`);
+            subBtns.forEach(btn => {
+                btn.classList.remove('border-brand-600', 'text-brand-600');
+                btn.classList.add('border-transparent', 'text-slate-500');
+            });
+
+            // Show current subtab content
+            const targetSub = document.getElementById(subId);
+            if (targetSub) {
+                targetSub.classList.remove('hidden');
+            }
+
+            // Activate current subtab button
+            const activeSubBtn = document.getElementById(`btn-${subId}`);
+            if (activeSubBtn) {
+                activeSubBtn.classList.add('border-brand-600', 'text-brand-600');
+                activeSubBtn.classList.remove('border-transparent', 'text-slate-500');
+            }
+        }
+
+        // Toggle Accordion Detail in Flowchart
+        function toggleFlowDetail(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        // Toggle Policy Gap Accordions
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.toggle('hidden');
+            }
+        }
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        // Resource Filter Category
+        function filterCategory(category) {
+            const cards = document.querySelectorAll('.res-card');
+            const btns = document.querySelectorAll('.res-filter-btn');
+
+            btns.forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-700');
+            });
+
+            event.target.classList.remove('bg-slate-100', 'text-slate-700');
+            event.target.classList.add('bg-brand-600', 'text-white');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category.includes(category)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Resource Search Keyword Filter
+        function filterResources() {
+            const input = document.getElementById('resource-search').value.toLowerCase();
+            const cards = document.querySelectorAll('.res-card');
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(input)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Form Submit Simulation
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const msg = document.getElementById('form-msg');
+            msg.classList.remove('hidden');
+            e.target.reset();
+        }
+
+        // Language toggle placeholder message
+        function toggleLang() {
+            alert("切換語言功能：繁體中文模式為預設版面。");
         }
     </script>
 </body>
